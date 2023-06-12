@@ -1,13 +1,24 @@
 # Swift Macros - AddAsync example
+In this example Swift Macaros are used to add an async function to a completion function like `func test(arg1: String, completion: (String) -> Void)` using the `@AddAsync` macro.  
+
+```swift
+@AddAsync
+func test(arg1: String, completion: (String) -> Void) {
+    
+}
+
+// Macro generated async function
+func test(arg1: String) async -> String {
+   await withCheckedContinuation { continuation in
+      self.test(arg1: String) { object in
+         continuation.resume(returning: object)
+      }
+   }
+}
+```
+
 ## What are Macros?
 Swift Macros allow you to generate repetitive code at compile time, making your app's codebase more easier to read and less tedious to write.
 
-There are two types of macros: 
-* **Freestanding** macros stand in place of something else in your code. They always start with a **hashtag** (#) sign. 
-```swift
-#caseDetection // Freestanding Macro
-```
-* **Attached** macros are used as attributes on declarations in your code. They start with an **@** sign.
-```swift
-@CaseDetection // Attached Macro
-```
+ 
+For more info about SwiftMacro check out [this article](https://blog.leonifrancesco.com/articles/swift-macros).
